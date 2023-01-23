@@ -4,4 +4,7 @@ export interface IProduct {
   quantity: string;
 }
 
-export interface IList<IProduct[]>
+export interface IList {
+  name: string;
+  list: IProduct[];
+}

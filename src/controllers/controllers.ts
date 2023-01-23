@@ -1,25 +1,15 @@
-import express, { Request, Response } from "express";
-import { IList, IProduct } from "./interfaces";
-import { list, allLists } from "./database";
+import { Request, Response } from "express";
 
-//============================================================MIDDLEWARES===============================================================//
+//Services:
+import {
+  createListService,
+  deleteListItemService,
+  deleteListService,
+  getAllListsService,
+  getSingleListService,
+  updateListItemService,
+} from "../services/services";
 
-//=============================================================SERVICES=================================================================//
-const createListService = (
-  requestBody: IList<IProduct[]>
-): IList<IProduct[]> => {
-  return requestBody;
-};
-
-const getAllListsService = () => {};
-
-const getSingleListService = (paramsId) => {};
-
-const updateListItemService = (paramsId, urlQuery) => {};
-
-const deleteListItemService = (paramsId, urlQuery) => {};
-
-const deleteListService = (paramsId) => {};
 //===========================================================CONTROLLERS================================================================//
 export const createListController = (
   request: Request,

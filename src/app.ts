@@ -10,7 +10,7 @@ import {
   getAllListsController,
   getSingleListController,
   updateListItemController,
-} from "./logic";
+} from "./controllers/controllers";
 
 const app: Application = express();
 app.use(json());

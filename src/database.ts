@@ -1,7 +1,5 @@
-import { IList, IProduct } from "./interfaces";
+import { IList } from "./interfaces";
 
-const list: IProduct[] = [];
+const allLists: IList[] = [];
 
-const allLists: IList<IProduct[]> = [];
-
-export { list, allLists };
+export { allLists };
