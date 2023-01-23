@@ -2,9 +2,7 @@ import { IList, IProduct } from "../interfaces";
 import { list, allLists } from "../database";
 
 //=============================================================SERVICES=================================================================//
-export const createListService = (
-  requestBody: IList<IProduct[]>
-): IList<IProduct[]> => {
+export const createListService = (requestBody: IList): IList => {
   return requestBody;
 };
 

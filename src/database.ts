@@ -1,5 +1,10 @@
 import { IList } from "./interfaces";
 
+const list: IList = {
+  listName: "",
+  list: [],
+};
+
 const allLists: IList[] = [];
 
-export { allLists };
+export { list, allLists };

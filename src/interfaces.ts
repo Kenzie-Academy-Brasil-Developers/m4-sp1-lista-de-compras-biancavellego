@@ -5,6 +5,6 @@ export interface IProduct {
 }
 
 export interface IList {
-  name: string;
+  listName: string;
   list: IProduct[];
 }
