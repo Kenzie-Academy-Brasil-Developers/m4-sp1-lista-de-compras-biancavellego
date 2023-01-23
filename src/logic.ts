@@ -1,11 +1,15 @@
 import express, { Request, Response } from "express";
-import { IProduct } from "./interfaces";
-import list from "./database";
+import { IList, IProduct } from "./interfaces";
+import { list, allLists } from "./database";
 
 //============================================================MIDDLEWARES===============================================================//
 
 //=============================================================SERVICES=================================================================//
-const createListService = (requestBody) => {};
+const createListService = (
+  requestBody: IList<IProduct[]>
+): IList<IProduct[]> => {
+  return requestBody;
+};
 
 const getAllListsService = () => {};
 

@@ -3,3 +3,5 @@ export interface IProduct {
   price: number;
   quantity: string;
 }
+
+export interface IList<IProduct[]>
