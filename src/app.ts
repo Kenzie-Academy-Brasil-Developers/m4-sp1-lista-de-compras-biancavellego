@@ -1,6 +1,7 @@
 import express, { Application, json } from "express";
 
 //Middlewares:
+import { ensureListExistsMiddleware } from "./middlewares/middlewares";
 
 //Controllers:
 import {
@@ -18,9 +19,25 @@ app.use(json());
 //=============================================================ROUTES===================================================================//
 app.post("/purchaseList", createListController);
 app.get("/purchaseList", getAllListsController);
-app.get("/purchaseList/:id", getSingleListController);
-app.patch("/purchaseList/:id/<itemName>", updateListItemController);
-app.delete("/purchaseList/:id/<itemName>", deleteListItemController);
-app.delete("/purchaseList/:id", deleteListController);
+app.get(
+  "/purchaseList/:id",
+  ensureListExistsMiddleware,
+  getSingleListController
+);
+app.patch(
+  "/purchaseList/:id/<itemName>",
+  ensureListExistsMiddleware,
+  updateListItemController
+);
+app.delete(
+  "/purchaseList/:id/<itemName>",
+  ensureListExistsMiddleware,
+  deleteListItemController
+);
+app.delete(
+  "/purchaseList/:id",
+  ensureListExistsMiddleware,
+  deleteListController
+);
 //==============================================================SERVER==================================================================//
 app.listen(3000, () => console.log("Server running in port 3000"));

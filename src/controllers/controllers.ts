@@ -40,6 +40,7 @@ export const updateListItemController = (
   response: Response
 ): Response => {
   const data = updateListItemService(
+    request.body,
     request.params.id,
     request.query,
     response
