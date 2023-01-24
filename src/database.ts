@@ -1,10 +1,5 @@
 import { IList } from "./interfaces";
 
-const list: IList = {
-  listName: "",
-  list: [],
-};
+let allLists: IList[] = [];
 
-const allLists: IList[] = [];
-
-export { list, allLists };
+export { allLists };

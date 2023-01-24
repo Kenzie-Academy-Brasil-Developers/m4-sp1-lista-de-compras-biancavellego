@@ -31,7 +31,7 @@ export const getSingleListController = (
   request: Request,
   response: Response
 ): Response => {
-  const data = getSingleListService(request.params);
+  const data = getSingleListService(request.params.id);
   return response.status(200).json({ data });
 };
 
@@ -39,7 +39,7 @@ export const updateListItemController = (
   request: Request,
   response: Response
 ): Response => {
-  const data = updateListItemService(request.params, request.query);
+  const data = updateListItemService(request.params.id, request.query);
   return response.status(200).json({ data });
 };
 
@@ -47,7 +47,7 @@ export const deleteListItemController = (
   request: Request,
   response: Response
 ): Response => {
-  deleteListItemService(request.params, request.query);
+  deleteListItemService(request.params.id, request.query);
   return response.status(204).json({});
 };
 
@@ -55,6 +55,6 @@ export const deleteListController = (
   request: Request,
   response: Response
 ): Response => {
-  deleteListService(request.params);
+  deleteListService(request.params.id);
   return response.status(204).json({});
 };
