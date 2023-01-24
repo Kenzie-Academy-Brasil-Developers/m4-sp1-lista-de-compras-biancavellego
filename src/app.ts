@@ -4,6 +4,7 @@ import express, { Application, json } from "express";
 import {
   ensureListExistsMiddleware,
   ensureProductExistsMiddleware,
+  ensureUuidValidityMiddleware,
 } from "./middlewares/middlewares";
 
 //Controllers:
@@ -24,23 +25,27 @@ app.post("/purchaseList", createListController);
 app.get("/purchaseList", getAllListsController);
 app.get(
   "/purchaseList/:id",
+  ensureUuidValidityMiddleware,
   ensureListExistsMiddleware,
   getSingleListController
 );
 app.patch(
   "/purchaseList/:id/<itemName>",
+  ensureUuidValidityMiddleware,
   ensureListExistsMiddleware,
   ensureProductExistsMiddleware,
   updateListProductController
 );
 app.delete(
   "/purchaseList/:id/<itemName>",
+  ensureUuidValidityMiddleware,
   ensureListExistsMiddleware,
   ensureProductExistsMiddleware,
   deleteListProductController
 );
 app.delete(
   "/purchaseList/:id",
+  ensureUuidValidityMiddleware,
   ensureListExistsMiddleware,
   deleteListController
 );

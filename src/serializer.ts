@@ -14,3 +14,7 @@ export { validateListData, validateProductData };
 // {
 //     "message": "Updatable fields are: \"name\" and \"quantity\""
 // }
+
+// {
+//     "message": "The list name need to be a string"
+// }

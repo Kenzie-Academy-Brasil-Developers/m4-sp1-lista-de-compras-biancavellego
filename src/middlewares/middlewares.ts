@@ -34,8 +34,23 @@ export const ensureProductExistsMiddleware = (
   if (requestedProduct[0]) {
     return response
       .status(404)
-      .json({ message: `Product with name ${urlQuery} does not exist` });
+      .json({ message: `Item with name ${urlQuery} does not exist` });
   }
 
   next();
+};
+//===========================================================ENSURE UUID VALIDITY MIDDLEWARE============================================//
+export const ensureUuidValidityMiddleware = (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  const ulrUuid = request.params.id;
+  const uuidRegexPattern =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  if (uuidRegexPattern.test(ulrUuid) === false) {
+    response.status(400).json({ message: "invalid uuid" });
+  }
+  return next();
 };

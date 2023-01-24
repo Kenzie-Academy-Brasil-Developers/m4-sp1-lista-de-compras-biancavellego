@@ -61,5 +61,5 @@ export const deleteListController = (
   response: Response
 ): Response => {
   deleteListService(request.params.id, response);
-  return response.status(204).json({});
+  return response.status(204).json([]);
 };

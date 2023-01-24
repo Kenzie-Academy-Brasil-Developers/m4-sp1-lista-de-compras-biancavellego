@@ -13,4 +13,15 @@ interface IList {
   data: IProduct[];
 }
 
-export { IProduct, IList, productRequiredFields, listRequiredFields };
+interface IProductUpdate {
+  name?: string;
+  quantity?: string;
+}
+
+export {
+  IProductUpdate,
+  IProduct,
+  IList,
+  productRequiredFields,
+  listRequiredFields,
+};
