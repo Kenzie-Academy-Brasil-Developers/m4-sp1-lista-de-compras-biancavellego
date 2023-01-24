@@ -1,11 +1,16 @@
-export interface IProduct {
+type productRequiredFields = "name" | "quantity";
+
+interface IProduct {
   name: string;
-  price: number;
   quantity: string;
 }
 
-export interface IList {
+type listRequiredFields = "listName" | "data";
+
+interface IList {
   id: string;
   listName: string;
-  listArray: IProduct[];
+  data: IProduct[];
 }
+
+export { IProduct, IList, productRequiredFields, listRequiredFields };
