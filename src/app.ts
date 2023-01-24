@@ -1,16 +1,19 @@
 import express, { Application, json } from "express";
 
 //Middlewares:
-import { ensureListExistsMiddleware } from "./middlewares/middlewares";
+import {
+  ensureListExistsMiddleware,
+  ensureProductExistsMiddleware,
+} from "./middlewares/middlewares";
 
 //Controllers:
 import {
   createListController,
   deleteListController,
-  deleteListItemController,
+  deleteListProductController,
   getAllListsController,
   getSingleListController,
-  updateListItemController,
+  updateListProductController,
 } from "./controllers/controllers";
 
 const app: Application = express();
@@ -27,12 +30,14 @@ app.get(
 app.patch(
   "/purchaseList/:id/<itemName>",
   ensureListExistsMiddleware,
-  updateListItemController
+  ensureProductExistsMiddleware,
+  updateListProductController
 );
 app.delete(
   "/purchaseList/:id/<itemName>",
   ensureListExistsMiddleware,
-  deleteListItemController
+  ensureProductExistsMiddleware,
+  deleteListProductController
 );
 app.delete(
   "/purchaseList/:id",

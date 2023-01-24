@@ -63,7 +63,7 @@ export const getSingleListService = (urlId: string, response: Response) => {
   }
 };
 //========================================================UPDATE LIST ITEM SERVICE=======================================================//
-export const updateListItemService = (
+export const updateListProductService = (
   requestBody: IProduct,
   urlId: string,
   urlQuery: any,
@@ -72,8 +72,8 @@ export const updateListItemService = (
   try {
     const validatedProduct: IProduct = validateProductData(requestBody);
 
-    const requestedList = allLists.find((list) => list.id === urlId);
-    const productToBeUpdated = requestedList!.data.filter(
+    const requestedList = allLists.filter((list) => list.id === urlId);
+    const productToBeUpdated = requestedList[0]!.data.filter(
       (product) => product.name === urlQuery
     );
 
@@ -95,13 +95,20 @@ export const updateListItemService = (
     return response.status(500).json({ message: error });
   }
 };
-//=========================================================DELETE LIST ITEM SERVICE======================================================//
-export const deleteListItemService = (
+//=========================================================DELETE LIST PRODUCT SERVICE==================================================//
+export const deleteListProductService = (
   urlId: string,
   urlQuery: any,
   response: Response
 ) => {
   try {
+    const requestedList = allLists.filter((list) => list.id === urlId);
+    const productToBeDeleted = requestedList[0].data.findIndex(
+      (product) => product.name === urlQuery
+    );
+
+    //At position "productToBeDeleted" (i.e. the index from product in the requested list), remove 1 element:
+    requestedList[0].data.splice(productToBeDeleted, 1);
   } catch (error: unknown) {
     if (error instanceof Error) {
       return response.status(400).json({ message: error.message });
@@ -113,6 +120,10 @@ export const deleteListItemService = (
 //===========================================================DELETE LIST SERVICE=========================================================//
 export const deleteListService = (urlId: string, response: Response) => {
   try {
+    const requestedListIndex = allLists.findIndex((list) => list.id === urlId);
+    allLists.splice(requestedListIndex, 1);
+
+    return [];
   } catch (error: unknown) {
     if (error instanceof Error) {
       return response.status(400).json({ message: error.message });

@@ -3,11 +3,11 @@ import { Request, Response } from "express";
 //Services:
 import {
   createListService,
-  deleteListItemService,
+  deleteListProductService,
   deleteListService,
   getAllListsService,
   getSingleListService,
-  updateListItemService,
+  updateListProductService,
 } from "../services/services";
 
 //===========================================================CONTROLLERS================================================================//
@@ -35,24 +35,24 @@ export const getSingleListController = (
   return response.status(200).json({ data });
 };
 
-export const updateListItemController = (
+export const updateListProductController = (
   request: Request,
   response: Response
 ): Response => {
-  const data = updateListItemService(
+  const data = updateListProductService(
     request.body,
     request.params.id,
-    request.query,
+    request.query.name,
     response
   );
   return response.status(200).json({ data });
 };
 
-export const deleteListItemController = (
+export const deleteListProductController = (
   request: Request,
   response: Response
 ): Response => {
-  deleteListItemService(request.params.id, request.query, response);
+  deleteListProductService(request.params.id, request.query.name, response);
   return response.status(204).json({});
 };
 

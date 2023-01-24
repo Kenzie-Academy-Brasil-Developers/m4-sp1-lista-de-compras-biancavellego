@@ -10,3 +10,7 @@ const validateListData = (payload: any): IList => {};
 const validateProductData = (payload: any): IProduct => {};
 
 export { validateListData, validateProductData };
+
+// {
+//     "message": "Updatable fields are: \"name\" and \"quantity\""
+// }
