@@ -44,7 +44,7 @@ export const ensureProductExistsMiddleware = (
     (product) => product.name === urlName
   );
 
-  if (requestedProduct[0]) {
+  if (!requestedProduct[0]) {
     return response
       .status(404)
       .json({ message: `Item with name ${urlName} does not exist` });
