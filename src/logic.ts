@@ -73,10 +73,7 @@ export const ensureUuidValidityMiddleware = (
 //======================================================================================================================================//
 
 //======================================================CREATE LIST SERVICE==============================================================//
-const createListService = (
-  requestBody: IList,
-  response: Response
-): IList | Response | object => {
+const createListService = (requestBody: IList) => {
   try {
     const validatedListData: IList = validateListData(requestBody);
     const validatedProductData: IProduct[] = requestBody.data.map((product) =>
@@ -85,21 +82,6 @@ const createListService = (
 
     const newListName = validatedListData.listName;
     const newListArray: IProduct[] = validatedProductData;
-
-    const newProductNames = newListArray.map((product) => product.name);
-    const productNames = allLists.forEach((list) =>
-      list.data.map((product) => product.name)
-    );
-
-    const nameAlreadyExists = newProductNames.forEach(
-      (newName: string) =>
-        newName === productNames!.forEach((name: string) => name)
-    );
-
-    if (nameAlreadyExists) {
-      return [403, { message: "Product already exists" }];
-      //response.status(403).json({ message: "Product already exists." });
-    }
 
     let newList: IList = {
       id: "",
@@ -114,43 +96,42 @@ const createListService = (
     return [201, newList];
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return response.status(400).json({ message: error.message });
+      return [400, { message: error.message }];
     }
     console.log(error);
-    return response.status(500).json({ message: error });
+    return [500, { message: error }];
   }
 };
 //=========================================================GET ALL LISTS SERVICE=========================================================//
-const getAllListsService = (response: Response) => {
+const getAllListsService = () => {
   try {
-    return allLists;
+    return [200, allLists];
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return response.status(400).json({ message: error.message });
+      return [400, { message: error.message }];
     }
     console.log(error);
-    return response.status(500).json({ message: error });
+    return [500, { message: error }];
   }
 };
 //=========================================================GET SINGLE LIST SERVICE=======================================================//
-const getSingleListService = (urlId: string, response: Response) => {
+const getSingleListService = (urlId: string) => {
   try {
     const requestedList = allLists.filter((list) => list.id === urlId);
-    return requestedList;
+    return [200, requestedList];
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return response.status(400).json({ message: error.message });
+      return [400, { message: error.message }];
     }
     console.log(error);
-    return response.status(500).json({ message: error });
+    return [500, { message: error }];
   }
 };
 //========================================================UPDATE LIST ITEM SERVICE=======================================================//
 const updateListProductService = (
   requestBody: IProduct,
   urlId: string,
-  urlQuery: any,
-  response: Response
+  urlQuery: any
 ) => {
   try {
     const validatedProduct: IProduct = validateProductData(requestBody);
@@ -169,21 +150,17 @@ const updateListProductService = (
       quantity: newQuantity,
     };
 
-    return updatedProduct;
+    return [200, updatedProduct];
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return response.status(400).json({ message: error.message });
+      return [400, { message: error.message }];
     }
     console.log(error);
-    return response.status(500).json({ message: error });
+    return [500, { message: error }];
   }
 };
 //=========================================================DELETE LIST PRODUCT SERVICE==================================================//
-const deleteListProductService = (
-  urlId: string,
-  urlQuery: any,
-  response: Response
-) => {
+const deleteListProductService = (urlId: string, urlQuery: any) => {
   try {
     const requestedList = allLists.filter((list) => list.id === urlId);
     const productToBeDeleted = requestedList[0].data.findIndex(
@@ -192,27 +169,29 @@ const deleteListProductService = (
 
     //At position "productToBeDeleted" (i.e. the index from product in the requested list), remove 1 element:
     requestedList[0].data.splice(productToBeDeleted, 1);
+
+    return [204, {}];
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return response.status(400).json({ message: error.message });
+      return [400, { message: error.message }];
     }
     console.log(error);
-    return response.status(500).json({ message: error });
+    return [500, { message: error }];
   }
 };
 //===========================================================DELETE LIST SERVICE========================================================//
-const deleteListService = (urlId: string, response: Response) => {
+const deleteListService = (urlId: string) => {
   try {
     const requestedListIndex = allLists.findIndex((list) => list.id === urlId);
     allLists.splice(requestedListIndex, 1);
 
-    return [];
+    return [204, []];
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return response.status(400).json({ message: error.message });
+      return [400, { message: error.message }];
     }
     console.log(error);
-    return response.status(500).json({ message: error });
+    return [500, { message: error }];
   }
 };
 
@@ -223,7 +202,7 @@ export const createListController = (
   request: Request,
   response: Response
 ): Response => {
-  const [status, data]: object = createListService(request.body, response);
+  const [status, data]: any = createListService(request.body);
   return response.status(status).json({ data });
 };
 
@@ -231,45 +210,47 @@ export const getAllListsController = (
   request: Request,
   response: Response
 ): Response => {
-  const data = getAllListsService(response);
-  return response.status(200).json({ data });
+  const [status, data]: any = getAllListsService();
+  return response.status(status).json({ data });
 };
 
 export const getSingleListController = (
   request: Request,
   response: Response
 ): Response => {
-  const data = getSingleListService(request.params.id, response);
-  return response.status(200).json({ data });
+  const [status, data]: any = getSingleListService(request.params.id);
+  return response.status(status).json({ data });
 };
 
 export const updateListProductController = (
   request: Request,
   response: Response
 ): Response => {
-  const data = updateListProductService(
+  const [status, data]: any = updateListProductService(
     request.body,
     request.params.id,
-    request.query.name,
-    response
+    request.query.name
   );
-  return response.status(200).json({ data });
+  return response.status(status).json({ data });
 };
 
 export const deleteListProductController = (
   request: Request,
   response: Response
 ): Response => {
-  deleteListProductService(request.params.id, request.query.name, response);
-  return response.status(204).json({});
+  const [status, data]: any = deleteListProductService(
+    request.params.id,
+    request.query.name
+  );
+  return response.status(status).json(data);
 };
 
 export const deleteListController = (
   request: Request,
   response: Response
 ): Response => {
-  deleteListService(request.params.id, response);
-  return response.status(204).json([]);
+  const [status, data]: any = deleteListService(request.params.id);
+  return response.status(status).json(data);
 };
 
 //======================================================================================================================================//

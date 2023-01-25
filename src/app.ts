@@ -30,14 +30,14 @@ app.get(
   getSingleListController
 );
 app.patch(
-  "/purchaseList/:id?name=",
+  "/purchaseList/:id/:name",
   ensureUuidValidityMiddleware,
   ensureListExistsMiddleware,
   ensureProductExistsMiddleware,
   updateListProductController
 );
 app.delete(
-  "/purchaseList/:id?name=",
+  "/purchaseList/:id/:name",
   ensureUuidValidityMiddleware,
   ensureListExistsMiddleware,
   ensureProductExistsMiddleware,
