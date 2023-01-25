@@ -23,7 +23,7 @@ export const ensureListExistsMiddleware = (
   const urlId = request.params.id;
   const requestedList = allLists.filter((list) => list.id === urlId);
 
-  if (requestedList[0]) {
+  if (!requestedList[0]) {
     return response
       .status(404)
       .json({ message: `List with id ${urlId} does not exist` });
@@ -62,7 +62,7 @@ export const ensureUuidValidityMiddleware = (
   const uuidRegexPattern =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-  if (uuidRegexPattern.test(ulrUuid) === false) {
+  if (!uuidRegexPattern.test(ulrUuid)) {
     response.status(400).json({ message: "invalid uuid" });
   }
   return next();
@@ -76,7 +76,7 @@ export const ensureUuidValidityMiddleware = (
 const createListService = (
   requestBody: IList,
   response: Response
-): IList | Response => {
+): IList | Response | object => {
   try {
     const validatedListData: IList = validateListData(requestBody);
     const validatedProductData: IProduct[] = requestBody.data.map((product) =>
@@ -96,8 +96,9 @@ const createListService = (
         newName === productNames!.forEach((name: string) => name)
     );
 
-    if (nameAlreadyExists === true) {
-      response.status(403).json({ message: "Product already exists." });
+    if (nameAlreadyExists) {
+      return [403, { message: "Product already exists" }];
+      //response.status(403).json({ message: "Product already exists." });
     }
 
     let newList: IList = {
@@ -110,7 +111,7 @@ const createListService = (
 
     allLists.push(...[newList]);
 
-    return newList;
+    return [201, newList];
   } catch (error: unknown) {
     if (error instanceof Error) {
       return response.status(400).json({ message: error.message });
@@ -222,8 +223,8 @@ export const createListController = (
   request: Request,
   response: Response
 ): Response => {
-  const data = createListService(request.body, response);
-  return response.status(201).json({ data });
+  const [status, data]: object = createListService(request.body, response);
+  return response.status(status).json({ data });
 };
 
 export const getAllListsController = (
