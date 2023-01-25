@@ -18,6 +18,20 @@ export const createListService = (
     const newListName = validatedListData.listName;
     const newListArray: IProduct[] = validatedProductData;
 
+    const newProductNames = newListArray.map((product) => product.name);
+    const productNames = allLists.forEach((list) =>
+      list.data.map((product) => product.name)
+    );
+
+    const nameAlreadyExists = newProductNames.forEach(
+      (newName: string) =>
+        newName === productNames!.forEach((name: string) => name)
+    );
+
+    if (nameAlreadyExists === true) {
+      response.status(403).json({ message: "Product already exists." });
+    }
+
     let newList: IList = {
       id: "",
       listName: "",

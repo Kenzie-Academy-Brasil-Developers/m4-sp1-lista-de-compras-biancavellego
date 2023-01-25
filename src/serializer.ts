@@ -1,4 +1,3 @@
-import { response } from "express";
 import {
   IList,
   IProduct,
@@ -6,18 +5,17 @@ import {
   listRequiredFields,
 } from "./interfaces";
 
+//============================================================VALIDATE LIST DATA=======================================================//
 const validateListData = (payload: any): IList => {
   const payloadKeys: string[] = Object.keys(payload);
   const requiredKeys: listRequiredFields[] = ["listName", "data"];
 
   if (requiredKeys.length > 2) {
-    response.status(400).json({ message: "Exceeded maximum number of keys" });
+    throw new Error("Exceeded maximum number of keys");
   }
 
   if (typeof requiredKeys[0] !== "string") {
-    response
-      .status(400)
-      .json({ message: "The list name needs to be a string" });
+    throw new Error("The list name needs to be a string");
   }
 
   const hasRequiredKeys: boolean = requiredKeys.every((key: string) =>
@@ -28,29 +26,26 @@ const validateListData = (payload: any): IList => {
     const key1: string = requiredKeys[0];
     const key2: string = requiredKeys[1];
 
-    response
-      .status(400)
-      .json({ message: `Updatable fields are: ${key1} and ${key2}` });
+    throw new Error(`Updatable fields are: ${key1} and ${key2}`);
   }
 
   return payload;
 };
 
+//==========================================================VALIDATE PRODUCT DATA=======================================================//
 const validateProductData = (payload: any): IProduct => {
   const payloadKeys: string[] = Object.keys(payload);
   const requiredKeys: productRequiredFields[] = ["name", "quantity"];
 
   if (requiredKeys.length > 2) {
-    response.status(400).json({ message: "Exceeded maximum number of keys" });
+    throw new Error("Exceeded maximum number of keys");
   }
 
   if (
     typeof requiredKeys[0] !== "string" ||
     typeof requiredKeys[1] !== "string"
   ) {
-    response.status(400).json({
-      message: "The product's field names data type need to be string",
-    });
+    throw new Error("The product's field names data type need to be string");
   }
 
   const hasRequiredKeys: boolean = requiredKeys.every((key: string) =>
@@ -61,9 +56,7 @@ const validateProductData = (payload: any): IProduct => {
     const key1: string = requiredKeys[0];
     const key2: string = requiredKeys[1];
 
-    response
-      .status(400)
-      .json({ message: `Updatable fields are: ${key1} and ${key2}` });
+    throw new Error(`Updatable fields are: ${key1} and ${key2}`);
   }
 
   return payload;
