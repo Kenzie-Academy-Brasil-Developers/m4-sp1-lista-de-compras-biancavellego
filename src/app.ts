@@ -5,7 +5,7 @@ import {
   ensureListExistsMiddleware,
   ensureProductExistsMiddleware,
   ensureUuidValidityMiddleware,
-} from "./middlewares/middlewares";
+} from "./logic";
 
 //Controllers:
 import {
@@ -15,7 +15,7 @@ import {
   getAllListsController,
   getSingleListController,
   updateListProductController,
-} from "./controllers/controllers";
+} from "./logic";
 
 const app: Application = express();
 app.use(json());
