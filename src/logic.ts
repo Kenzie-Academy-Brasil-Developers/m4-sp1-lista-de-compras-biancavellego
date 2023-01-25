@@ -84,9 +84,9 @@ const createListService = (requestBody: IList) => {
     const newListArray: IProduct[] = validatedProductData;
 
     let newList: IList = {
-      id: "",
       listName: "",
       data: [],
+      id: "",
     };
 
     newList = { id: uuidv4(), listName: newListName, data: newListArray };
