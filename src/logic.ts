@@ -38,16 +38,16 @@ export const ensureProductExistsMiddleware = (
   next: NextFunction
 ) => {
   const urlId = request.params.id;
-  const urlQuery = request.query.name;
+  const urlName = request.params.name;
   const requestedList = allLists.filter((list) => list.id === urlId);
   const requestedProduct = requestedList[0].data.filter(
-    (product) => product.name === urlQuery
+    (product) => product.name === urlName
   );
 
   if (requestedProduct[0]) {
     return response
       .status(404)
-      .json({ message: `Item with name ${urlQuery} does not exist` });
+      .json({ message: `Item with name ${urlName} does not exist` });
   }
 
   next();
@@ -131,14 +131,14 @@ const getSingleListService = (urlId: string) => {
 const updateListProductService = (
   requestBody: IProduct,
   urlId: string,
-  urlQuery: any
+  urlName: string
 ) => {
   try {
     const validatedProduct: IProduct = validateProductData(requestBody);
 
     const requestedList = allLists.filter((list) => list.id === urlId);
     const productToBeUpdated = requestedList[0]!.data.filter(
-      (product) => product.name === urlQuery
+      (product) => product.name === urlName
     );
 
     const newName = (productToBeUpdated[0].name = validatedProduct.name);
@@ -160,11 +160,11 @@ const updateListProductService = (
   }
 };
 //=========================================================DELETE LIST PRODUCT SERVICE==================================================//
-const deleteListProductService = (urlId: string, urlQuery: any) => {
+const deleteListProductService = (urlId: string, urlName: string) => {
   try {
     const requestedList = allLists.filter((list) => list.id === urlId);
     const productToBeDeleted = requestedList[0].data.findIndex(
-      (product) => product.name === urlQuery
+      (product) => product.name === urlName
     );
 
     //At position "productToBeDeleted" (i.e. the index from product in the requested list), remove 1 element:
@@ -229,7 +229,7 @@ export const updateListProductController = (
   const [status, data]: any = updateListProductService(
     request.body,
     request.params.id,
-    request.query.name
+    request.params.name
   );
   return response.status(status).json({ data });
 };
@@ -240,7 +240,7 @@ export const deleteListProductController = (
 ): Response => {
   const [status, data]: any = deleteListProductService(
     request.params.id,
-    request.query.name
+    request.params.name
   );
   return response.status(status).json(data);
 };
