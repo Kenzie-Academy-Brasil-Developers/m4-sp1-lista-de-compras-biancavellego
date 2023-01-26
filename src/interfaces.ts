@@ -8,7 +8,7 @@ interface IProduct {
 type listRequiredFields = "listName" | "data";
 
 interface IList {
-  id: string;
+  id: number;
   listName: string;
   data: IProduct[];
 }

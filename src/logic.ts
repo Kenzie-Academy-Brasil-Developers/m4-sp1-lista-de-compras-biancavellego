@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { allLists } from "./database";
-import { v4 as uuidv4 } from "uuid";
 
 //Interfaces:
 import {
@@ -20,7 +19,7 @@ export const ensureListExistsMiddleware = (
   response: Response,
   next: NextFunction
 ) => {
-  const urlId = request.params.id;
+  const urlId = Number(request.params.id);
   const requestedList = allLists.filter((list) => list.id === urlId);
 
   if (!requestedList[0]) {
@@ -37,7 +36,7 @@ export const ensureProductExistsMiddleware = (
   response: Response,
   next: NextFunction
 ) => {
-  const urlId = request.params.id;
+  const urlId = Number(request.params.id);
   const urlName = request.params.name;
   const requestedList = allLists.filter((list) => list.id === urlId);
   const requestedProduct = requestedList[0].data.filter(
@@ -86,10 +85,12 @@ const createListService = (requestBody: IList) => {
     let newList: IList = {
       listName: "",
       data: [],
-      id: "",
+      id: 0,
     };
 
-    newList = { id: uuidv4(), listName: newListName, data: newListArray };
+    const listId = allLists.length + 1;
+
+    newList = { id: listId, listName: newListName, data: newListArray };
 
     allLists.push(...[newList]);
 
@@ -115,7 +116,7 @@ const getAllListsService = () => {
   }
 };
 //=========================================================GET SINGLE LIST SERVICE=======================================================//
-const getSingleListService = (urlId: string) => {
+const getSingleListService = (urlId: number) => {
   try {
     const requestedList = allLists.filter((list) => list.id === urlId);
     return [200, requestedList];
@@ -130,7 +131,7 @@ const getSingleListService = (urlId: string) => {
 //========================================================UPDATE LIST ITEM SERVICE=======================================================//
 const updateListProductService = (
   requestBody: IProduct,
-  urlId: string,
+  urlId: number,
   urlName: string
 ) => {
   try {
@@ -160,7 +161,7 @@ const updateListProductService = (
   }
 };
 //=========================================================DELETE LIST PRODUCT SERVICE==================================================//
-const deleteListProductService = (urlId: string, urlName: string) => {
+const deleteListProductService = (urlId: number, urlName: string) => {
   try {
     const requestedList = allLists.filter((list) => list.id === urlId);
     const productToBeDeleted = requestedList[0].data.findIndex(
@@ -180,7 +181,7 @@ const deleteListProductService = (urlId: string, urlName: string) => {
   }
 };
 //===========================================================DELETE LIST SERVICE========================================================//
-const deleteListService = (urlId: string) => {
+const deleteListService = (urlId: number) => {
   try {
     const requestedListIndex = allLists.findIndex((list) => list.id === urlId);
     allLists.splice(requestedListIndex, 1);
@@ -218,7 +219,7 @@ export const getSingleListController = (
   request: Request,
   response: Response
 ): Response => {
-  const [status, data]: any = getSingleListService(request.params.id);
+  const [status, data]: any = getSingleListService(Number(request.params.id));
   return response.status(status).json({ data });
 };
 
@@ -228,7 +229,7 @@ export const updateListProductController = (
 ): Response => {
   const [status, data]: any = updateListProductService(
     request.body,
-    request.params.id,
+    Number(request.params.id),
     request.params.name
   );
   return response.status(status).json({ data });
@@ -239,7 +240,7 @@ export const deleteListProductController = (
   response: Response
 ): Response => {
   const [status, data]: any = deleteListProductService(
-    request.params.id,
+    Number(request.params.id),
     request.params.name
   );
   return response.status(status).json(data);
@@ -249,7 +250,7 @@ export const deleteListController = (
   request: Request,
   response: Response
 ): Response => {
-  const [status, data]: any = deleteListService(request.params.id);
+  const [status, data]: any = deleteListService(Number(request.params.id));
   return response.status(status).json(data);
 };
 
