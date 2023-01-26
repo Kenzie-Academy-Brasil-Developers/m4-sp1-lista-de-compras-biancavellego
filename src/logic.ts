@@ -228,7 +228,7 @@ export const createListController = (
   response: Response
 ): Response => {
   const [status, data]: any = createListService(request.body);
-  return response.status(status).json({ data });
+  return response.status(status).json(data);
 };
 
 export const getAllListsController = (
@@ -236,7 +236,7 @@ export const getAllListsController = (
   response: Response
 ): Response => {
   const [status, data]: any = getAllListsService();
-  return response.status(status).json({ data });
+  return response.status(status).json(data);
 };
 
 export const getSingleListController = (
@@ -244,7 +244,7 @@ export const getSingleListController = (
   response: Response
 ): Response => {
   const [status, data]: any = getSingleListService(Number(request.params.id));
-  return response.status(status).json({ data });
+  return response.status(status).json(data);
 };
 
 export const updateListProductController = (
@@ -256,7 +256,7 @@ export const updateListProductController = (
     Number(request.params.id),
     request.params.name
   );
-  return response.status(status).json({ data });
+  return response.status(status).json(data);
 };
 
 export const deleteListProductController = (
@@ -291,13 +291,6 @@ const validateListData = (payload: any): IList => {
     throw new Error("Exceeded maximum number of keys");
   }
 
-  if (
-    typeof payload.listName !== "string" ||
-    typeof payload.data !== "object"
-  ) {
-    throw new Error("The list name needs to be a string");
-  }
-
   const hasRequiredKeys: boolean = requiredKeys.every((key: string) =>
     payloadKeys.includes(key)
   );
@@ -309,6 +302,12 @@ const validateListData = (payload: any): IList => {
     throw new Error(`Updatable fields are: ${key1} and ${key2}`);
   }
 
+  if (
+    typeof payload.listName !== "string" ||
+    typeof payload.data !== "object"
+  ) {
+    throw new Error("The list name needs to be a string");
+  }
   return payload;
 };
 
@@ -321,13 +320,6 @@ const validateProductData = (payload: any): IProduct => {
     throw new Error("Exceeded maximum number of keys");
   }
 
-  if (
-    typeof payload.name !== "string" ||
-    typeof payload.quantity !== "string"
-  ) {
-    throw new Error("The product's field names data type need to be string");
-  }
-
   const hasRequiredKeys: boolean = requiredKeys.every((key: string) =>
     payloadKeys.includes(key)
   );
@@ -337,6 +329,13 @@ const validateProductData = (payload: any): IProduct => {
     const key2: string = requiredKeys[1];
 
     throw new Error(`Updatable fields are: ${key1} and ${key2}`);
+  }
+
+  if (
+    typeof payload.name !== "string" ||
+    typeof payload.quantity !== "string"
+  ) {
+    throw new Error("The product's field names data type need to be string");
   }
 
   return payload;
