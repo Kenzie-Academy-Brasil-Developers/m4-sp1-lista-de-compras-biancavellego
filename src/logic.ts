@@ -263,11 +263,14 @@ const validateListData = (payload: any): IList => {
   const payloadKeys: string[] = Object.keys(payload);
   const requiredKeys: listRequiredFields[] = ["listName", "data"];
 
-  if (requiredKeys.length > 2) {
+  if (payloadKeys.length > 2) {
     throw new Error("Exceeded maximum number of keys");
   }
 
-  if (typeof requiredKeys[0] !== "string") {
+  if (
+    typeof payload.listName !== "string" ||
+    typeof payload.data !== "object"
+  ) {
     throw new Error("The list name needs to be a string");
   }
 
@@ -290,13 +293,13 @@ const validateProductData = (payload: any): IProduct => {
   const payloadKeys: string[] = Object.keys(payload);
   const requiredKeys: productRequiredFields[] = ["name", "quantity"];
 
-  if (requiredKeys.length > 2) {
+  if (payloadKeys.length > 2) {
     throw new Error("Exceeded maximum number of keys");
   }
 
   if (
-    typeof requiredKeys[0] !== "string" ||
-    typeof requiredKeys[1] !== "string"
+    typeof payload.name !== "string" ||
+    typeof payload.quantity !== "string"
   ) {
     throw new Error("The product's field names data type need to be string");
   }
