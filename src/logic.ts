@@ -88,7 +88,13 @@ const createListService = (requestBody: IList) => {
       id: 0,
     };
 
-    const listId = allLists.length + 1;
+    let listId = allLists.length + 1;
+
+    const idAlreadyExists = allLists.find((list) => list.id === listId);
+
+    if (idAlreadyExists) {
+      listId = idAlreadyExists.id + 1;
+    }
 
     newList = { id: listId, listName: newListName, data: newListArray };
 
