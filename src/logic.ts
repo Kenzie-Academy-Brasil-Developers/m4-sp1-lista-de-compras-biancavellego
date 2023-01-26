@@ -7,6 +7,7 @@ import {
   IProduct,
   productRequiredFields,
   listRequiredFields,
+  IProductUpdate,
 } from "./interfaces";
 
 //======================================================================================================================================//
@@ -52,14 +53,13 @@ export const ensureProductExistsMiddleware = (
   next();
 };
 //===================================================ENSURE UUID VALIDITY MIDDLEWARE=====================================================//
-export const ensureUuidValidityMiddleware = (
+export const ensureIdIsValidMiddleware = (
   request: Request,
   response: Response,
   next: NextFunction
 ) => {
   const ulrUuid = request.params.id;
-  const uuidRegexPattern =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const uuidRegexPattern = /[1-9][0-9]*/;
 
   if (!uuidRegexPattern.test(ulrUuid)) {
     response.status(400).json({ message: "invalid uuid" });
@@ -130,7 +130,7 @@ const getSingleListService = (urlId: number) => {
 };
 //========================================================UPDATE LIST ITEM SERVICE=======================================================//
 const updateListProductService = (
-  requestBody: IProduct,
+  requestBody: IProductUpdate,
   urlId: number,
   urlName: string
 ) => {
