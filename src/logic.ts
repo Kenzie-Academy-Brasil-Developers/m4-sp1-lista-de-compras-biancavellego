@@ -82,6 +82,24 @@ const createListService = (requestBody: IList) => {
     const newListName = validatedListData.listName;
     const newListArray: IProduct[] = validatedProductData;
 
+    const productNames = newListArray.map((product) => product.name);
+
+    let result = false;
+    for (let i = 0; i < productNames.length; i++) {
+      for (let j = 0; j < productNames.length; j++) {
+        if (i !== j) {
+          if (productNames[i] === productNames[j]) {
+            result = true;
+            break;
+          }
+        }
+      }
+    }
+
+    if (result === true) {
+      return [409, { message: "Product name already exists." }];
+    }
+
     let newList: IList = {
       listName: "",
       data: [],
