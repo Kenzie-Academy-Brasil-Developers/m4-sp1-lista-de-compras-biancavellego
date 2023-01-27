@@ -143,7 +143,8 @@ const getAllListsService = () => {
 const getSingleListService = (urlId: number) => {
   try {
     const requestedList = allLists.filter((list) => list.id === urlId);
-    return [200, requestedList];
+
+    return [200, requestedList[0]];
   } catch (error: unknown) {
     if (error instanceof Error) {
       return [400, { message: error.message }];
